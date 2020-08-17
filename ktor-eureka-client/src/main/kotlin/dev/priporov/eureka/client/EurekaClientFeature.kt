@@ -7,28 +7,28 @@ import com.netflix.appinfo.providers.EurekaConfigBasedInstanceInfoProvider
 import com.netflix.discovery.DefaultEurekaClientConfig
 import com.netflix.discovery.DiscoveryClient
 import dev.priporov.eureka.client.config.EurekaConfig
-import dev.priporov.eureka.client.config.EurekaConfigBuilder
+import dev.priporov.eureka.client.config.instance.EurekaInstanceConfigBuilder
 import io.ktor.application.*
 import io.ktor.util.AttributeKey
 
 
 class EurekaClientFeature private constructor(
     private val monitor: ApplicationEvents,
-    private var instanceConfig: EurekaConfig,
+    private var eurekaConfig: EurekaConfig,
     private val pipeline: Application
 ) {
     private val eurekaDiscoveryClientKey = AttributeKey<DiscoveryClient>("EurekaDiscoveryClient")
 
     init {
         monitor.subscribe(ApplicationStarted) {
-            val instanceConfig = EurekaConfigBuilder.build(instanceConfig, pipeline)
+            val instanceConfig = EurekaInstanceConfigBuilder.build(eurekaConfig, pipeline)
 
             val instanceInfo = EurekaConfigBasedInstanceInfoProvider(instanceConfig).get()
 
             val applicationInfoManager = ApplicationInfoManager(instanceConfig, instanceInfo)
 
             val defaultEurekaClientConfig = DefaultEurekaClientConfig().apply {
-
+                this.eurekaServerURLContext
             }
             val discoveryClient = DiscoveryClient(applicationInfoManager, defaultEurekaClientConfig);
             pipeline.attributes.put(eurekaDiscoveryClientKey, discoveryClient)

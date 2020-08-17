@@ -10,5 +10,3 @@ val Application.discoveryClient: DiscoveryClient
     get() = checkNotNull(attributes.getOrNull(discoveryClientKey)) {
         "EurekaDiscoveryClient not configured or still not initialized"
     }
-
-
