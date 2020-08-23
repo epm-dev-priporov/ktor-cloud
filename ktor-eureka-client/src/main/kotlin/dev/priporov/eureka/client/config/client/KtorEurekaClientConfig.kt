@@ -1,8 +1,10 @@
 package dev.priporov.eureka.client.config.client
 
+import com.netflix.discovery.DefaultEurekaClientConfig.DEFAULT_ZONE
+import com.netflix.discovery.EurekaClientConfig
 import com.netflix.discovery.shared.transport.EurekaTransportConfig
 
-interface KtorEurekaClientConfig {
+interface KtorEurekaClientConfig: EurekaClientConfig {
     fun setEurekaServerTotalConnectionsPerHost(value: Int)
     fun enableUnregisterOnShutdown(value: Boolean)
     fun setHeartbeatExecutorThreadPoolSize(value: Int)
@@ -42,10 +44,11 @@ interface KtorEurekaClientConfig {
     fun setEurekaServiceUrlPollIntervalSeconds(value: Int)
     fun setProxyPort(value: String)
     fun setExperimental(name: String?, value: String)
-    fun setEurekaServerServiceUrls(value: MutableList<String>, myZone: String?)
+    fun setEurekaServerServiceUrls(value: List<String>, myZone: String = DEFAULT_ZONE)
     fun enableLogDeltaDiff(value: Boolean)
     fun enableDisableDelta(value: Boolean)
     fun enableFetchRegistry(value: Boolean)
     fun enableEnforceRegistrationAtInit(value: Boolean)
     fun enableUseDnsForFetchingServiceUrls(value: Boolean)
+
 }

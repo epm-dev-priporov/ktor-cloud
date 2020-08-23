@@ -4,7 +4,6 @@ import com.netflix.appinfo.ApplicationInfoManager
 import com.netflix.appinfo.HealthCheckHandler
 import com.netflix.appinfo.InstanceInfo
 import com.netflix.appinfo.providers.EurekaConfigBasedInstanceInfoProvider
-import com.netflix.discovery.DefaultEurekaClientConfig
 import com.netflix.discovery.DiscoveryClient
 import dev.priporov.eureka.client.config.EurekaConfig
 import dev.priporov.eureka.client.config.instance.EurekaInstanceConfigBuilder
@@ -25,12 +24,11 @@ class EurekaClientFeature private constructor(
 
             val instanceInfo = EurekaConfigBasedInstanceInfoProvider(instanceConfig).get()
 
-            val applicationInfoManager = ApplicationInfoManager(instanceConfig, instanceInfo)
+            val discoveryClient = DiscoveryClient(
+                ApplicationInfoManager(instanceConfig, instanceInfo),
+                eurekaConfig
+            )
 
-            val defaultEurekaClientConfig = DefaultEurekaClientConfig().apply {
-                this.eurekaServerURLContext
-            }
-            val discoveryClient = DiscoveryClient(applicationInfoManager, defaultEurekaClientConfig);
             pipeline.attributes.put(eurekaDiscoveryClientKey, discoveryClient)
             monitor.raise(EurekaClientConnected, discoveryClient)
 
