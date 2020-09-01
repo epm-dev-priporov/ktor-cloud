@@ -13,7 +13,10 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getHeartbeatExecutorThreadPoolSize(): Int {
-        return super.getHeartbeatExecutorThreadPoolSize()
+        return map.getOrDefault(
+            GET_HEARTBEAT_EXECUTOR_THREAD_POOL_SIZE,
+            super.getHeartbeatExecutorThreadPoolSize()
+        ) as Int
     }
 
     override fun setEurekaServerTotalConnectionsPerHost(value: Int) {
@@ -21,7 +24,10 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getEurekaServerTotalConnectionsPerHost(): Int {
-        return super.getEurekaServerTotalConnectionsPerHost()
+        return map.getOrDefault(
+            GET_EUREKA_SERVER_TOTAL_CONNECTIONS_PER_HOST,
+            super.getEurekaServerTotalConnectionsPerHost()
+        ) as Int
     }
 
     override fun enableUnregisterOnShutdown(value: Boolean) {
@@ -29,15 +35,18 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun shouldUnregisterOnShutdown(): Boolean {
-        return super<DefaultEurekaClientConfig>.shouldUnregisterOnShutdown()
+        return map.getOrDefault(
+            SHOULD_UNREGISTER_ON_SHUTDOWN,
+            super<DefaultEurekaClientConfig>.shouldUnregisterOnShutdown()
+        ) as Boolean
     }
 
-    override fun setGZipContent(value: Boolean) {
+    override fun enableGZipContent(value: Boolean) {
         map[SHOULD_GZIP_CONTENT] = value
     }
 
     override fun shouldGZipContent(): Boolean {
-        return super.shouldGZipContent()
+        return map.getOrDefault(SHOULD_GZIP_CONTENT, super.shouldGZipContent()) as Boolean
     }
 
     override fun setRegistryForRemoteRegions(value: String?) {
@@ -45,7 +54,7 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun fetchRegistryForRemoteRegions(): String? {
-        return super.fetchRegistryForRemoteRegions()
+        return map.getOrDefault(FETCH_REGISTRY_FOR_REMOTE_REGIONS, super.fetchRegistryForRemoteRegions()) as String?
     }
 
     override fun setDollarReplacement(value: String) {
@@ -53,7 +62,7 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getDollarReplacement(): String? {
-        return super.getDollarReplacement()
+        return map.getOrDefault(GET_DOLLAR_REPLACEMENT, super.getDollarReplacement()) as String?
     }
 
     override fun setRegistryFetchIntervalSeconds(value: Int) {
@@ -61,7 +70,10 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getRegistryFetchIntervalSeconds(): Int {
-        return super.getRegistryFetchIntervalSeconds()
+        return map.getOrDefault(
+            GET_REGISTRY_FETCH_INTERVAL_SECONDS,
+            super.getRegistryFetchIntervalSeconds()
+        ) as Int
     }
 
     override fun setEurekaServerReadTimeoutSeconds(value: Int) {
@@ -69,7 +81,10 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getEurekaServerReadTimeoutSeconds(): Int {
-        return super.getEurekaServerReadTimeoutSeconds()
+        return map.getOrDefault(
+            GET_EUREKA_SERVER_READ_TIMEOUT_SECONDS,
+            super.getEurekaServerReadTimeoutSeconds()
+        ) as Int
     }
 
     override fun setClientDataAccept(value: String) {
@@ -77,7 +92,7 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getClientDataAccept(): String? {
-        return super.getClientDataAccept()
+        return map.getOrDefault(GET_CLIENT_DATA_ACCEPT, super.getClientDataAccept()) as String?
     }
 
     override fun setEscapeCharReplacement(value: String) {
@@ -85,15 +100,23 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getEscapeCharReplacement(): String? {
-        return super.getEscapeCharReplacement()
+        return map.getOrDefault(GET_ESCAPE_CHAR_REPLACEMENT, super.getEscapeCharReplacement()) as String?
     }
 
     override fun setAvailabilityZones(value: Array<String>, region: String?) {
-        map[GET_AVAILABILITY_ZONES] = value // todo
+        map[GET_AVAILABILITY_ZONES.withKey(region)] = value
     }
 
+    override fun setAvailabilityZones(value: Collection<String>, region: String?) {
+        map[GET_AVAILABILITY_ZONES.withKey(region)] = value.toTypedArray()
+    }
+
+    @Suppress("UNCHECKED_CAST")
     override fun getAvailabilityZones(region: String?): Array<String> {
-        return super.getAvailabilityZones(region)
+        return map.getOrDefault(
+            GET_AVAILABILITY_ZONES.withKey(region),
+            super.getAvailabilityZones(region)
+        ) as Array<String>
     }
 
     override fun setHeartbeatExecutorExponentialBackOffBound(value: Int) {
@@ -101,7 +124,10 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getHeartbeatExecutorExponentialBackOffBound(): Int {
-        return super.getHeartbeatExecutorExponentialBackOffBound()
+        return map.getOrDefault(
+            GET_HEARTBEAT_EXECUTOR_EXPONENTIAL_BACK_OFF_BOUND,
+            super.getHeartbeatExecutorExponentialBackOffBound()
+        ) as Int
     }
 
     override fun setProxyHost(value: String) {
@@ -109,7 +135,7 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getProxyHost(): String? {
-        return super.getProxyHost()
+        return map.getOrDefault(GET_PROXY_HOST, super.getProxyHost()) as String?
     }
 
     override fun setOnDemandUpdateStatusChange(value: Boolean) {
@@ -117,7 +143,10 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun shouldOnDemandUpdateStatusChange(): Boolean {
-        return super.shouldOnDemandUpdateStatusChange()
+        return map.getOrDefault(
+            SHOULD_ON_DEMAND_UPDATE_STATUS_CHANGE,
+            super.shouldOnDemandUpdateStatusChange()
+        ) as Boolean
     }
 
     override fun setTransportConfig(value: EurekaTransportConfig) {
@@ -125,7 +154,7 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getTransportConfig(): EurekaTransportConfig? {
-        return super.getTransportConfig()
+        return map.getOrDefault(GET_TRANSPORT_CONFIG, super.getTransportConfig()) as EurekaTransportConfig?
     }
 
     override fun setProxyUserName(value: String) {
@@ -133,7 +162,7 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getProxyUserName(): String? {
-        return super.getProxyUserName()
+        return map.getOrDefault(GET_PROXY_USER_NAME, super.getProxyUserName()) as String?
     }
 
     override fun setBackupRegistryImpl(value: String) {
@@ -141,7 +170,7 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getBackupRegistryImpl(): String? {
-        return super.getBackupRegistryImpl()
+        return map.getOrDefault(GET_BACKUP_REGISTRY_IMPL, super.getBackupRegistryImpl()) as String?
     }
 
     override fun setInitialInstanceInfoReplicationIntervalSeconds(value: Int) {
@@ -149,23 +178,24 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getInitialInstanceInfoReplicationIntervalSeconds(): Int {
-        return super.getInitialInstanceInfoReplicationIntervalSeconds()
+        return map.getOrDefault(
+            GET_INITIAL_INSTANCE_INFO_REPLICATION_INTERVAL_SECONDS,
+            super.getInitialInstanceInfoReplicationIntervalSeconds()
+        ) as Int
     }
 
     override fun setDecoderName(value: String) {
         map[GET_DECODER_NAME] = value
     }
 
-    override fun getDecoderName(): String? {
-        return super.getDecoderName()
-    }
+    override fun getDecoderName(): String? = map.getOrDefault(GET_DECODER_NAME, super.getDecoderName()) as String?
 
     override fun setPreferSameZoneEureka(value: Boolean) {
         map[SHOULD_PREFER_SAME_ZONE_EUREKA] = value
     }
 
     override fun shouldPreferSameZoneEureka(): Boolean {
-        return super.shouldPreferSameZoneEureka()
+        return map.getOrDefault(SHOULD_PREFER_SAME_ZONE_EUREKA, super.shouldPreferSameZoneEureka()) as Boolean
     }
 
     override fun enableFetchRegistry(value: Boolean) {
@@ -173,7 +203,7 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun shouldFetchRegistry(): Boolean {
-        return super.shouldFetchRegistry()
+        return map.getOrDefault(SHOULD_FETCH_REGISTRY, super.shouldFetchRegistry()) as Boolean
     }
 
     override fun enableEnforceRegistrationAtInit(value: Boolean) {
@@ -181,7 +211,10 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun shouldEnforceRegistrationAtInit(): Boolean {
-        return super<DefaultEurekaClientConfig>.shouldEnforceRegistrationAtInit()
+        return map.getOrDefault(
+            SHOULD_ENFORCE_REGISTRATION_AT_INIT,
+            super<DefaultEurekaClientConfig>.shouldEnforceRegistrationAtInit()
+        ) as Boolean
     }
 
     override fun setEurekaServerURLContext(value: String) {
@@ -189,7 +222,7 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getEurekaServerURLContext(): String? {
-        return super.getEurekaServerURLContext()
+        return map.getOrDefault(GET_EUREKA_SERVER_URLCONTEXT, super.getEurekaServerURLContext()) as String?
     }
 
     override fun setRegistryRefreshSingleVipAddress(value: String?) {
@@ -197,7 +230,10 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getRegistryRefreshSingleVipAddress(): String? {
-        return super.getRegistryRefreshSingleVipAddress()
+        return map.getOrDefault(
+            GET_REGISTRY_REFRESH_SINGLE_VIP_ADDRESS,
+            super.getRegistryRefreshSingleVipAddress()
+        ) as String?
     }
 
     override fun setRegion(value: String) {
@@ -205,7 +241,7 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getRegion(): String? {
-        return super.getRegion()
+        return map.getOrDefault(GET_REGION, super.getRegion()) as String?
     }
 
     override fun setEurekaServerDNSName(value: String) {
@@ -213,7 +249,7 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getEurekaServerDNSName(): String? {
-        return super.getEurekaServerDNSName()
+        return map.getOrDefault(GET_EUREKA_SERVER_DNSNAME, super.getEurekaServerDNSName()) as String?
     }
 
     override fun enableUseDnsForFetchingServiceUrls(value: Boolean) {
@@ -221,7 +257,10 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun shouldUseDnsForFetchingServiceUrls(): Boolean {
-        return super.shouldUseDnsForFetchingServiceUrls()
+        return map.getOrDefault(
+            SHOULD_USE_DNS_FOR_FETCHING_SERVICE_URLS,
+            super.shouldUseDnsForFetchingServiceUrls()
+        ) as Boolean
     }
 
     override fun setEncoderName(value: String) {
@@ -229,7 +268,7 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getEncoderName(): String? {
-        return super.getEncoderName()
+        return map.getOrDefault(GET_ENCODER_NAME, super.getEncoderName()) as String?
     }
 
     override fun setProxyPassword(value: String) {
@@ -237,7 +276,7 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getProxyPassword(): String? {
-        return super.getProxyPassword()
+        return map.getOrDefault(GET_PROXY_PASSWORD, super.getProxyPassword()) as String?
     }
 
     override fun setEurekaServerConnectTimeoutSeconds(value: Int) {
@@ -245,7 +284,10 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getEurekaServerConnectTimeoutSeconds(): Int {
-        return super.getEurekaServerConnectTimeoutSeconds()
+        return map.getOrDefault(
+            GET_EUREKA_SERVER_CONNECT_TIMEOUT_SECONDS,
+            super.getEurekaServerConnectTimeoutSeconds()
+        ) as Int
     }
 
     override fun setEurekaServerPort(value: String) {
@@ -253,7 +295,7 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getEurekaServerPort(): String? {
-        return super.getEurekaServerPort()
+        return map.getOrDefault(GET_EUREKA_SERVER_PORT, super.getEurekaServerPort()) as String?
     }
 
     override fun setFilterOnlyUpInstances(value: Boolean) {
@@ -261,7 +303,7 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun shouldFilterOnlyUpInstances(): Boolean {
-        return super.shouldFilterOnlyUpInstances()
+        return map.getOrDefault(SHOULD_FILTER_ONLY_UP_INSTANCES, super.shouldFilterOnlyUpInstances()) as Boolean
     }
 
     override fun setEurekaConnectionIdleTimeoutSeconds(value: Int) {
@@ -269,7 +311,10 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getEurekaConnectionIdleTimeoutSeconds(): Int {
-        return super.getEurekaConnectionIdleTimeoutSeconds()
+        return map.getOrDefault(
+            GET_EUREKA_CONNECTION_IDLE_TIMEOUT_SECONDS,
+            super.getEurekaConnectionIdleTimeoutSeconds()
+        ) as Int
     }
 
     override fun setCacheRefreshExecutorThreadPoolSize(value: Int) {
@@ -277,7 +322,10 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getCacheRefreshExecutorThreadPoolSize(): Int {
-        return super.getCacheRefreshExecutorThreadPoolSize()
+        return map.getOrDefault(
+            GET_CACHE_REFRESH_EXECUTOR_THREAD_POOL_SIZE,
+            super.getCacheRefreshExecutorThreadPoolSize()
+        ) as Int
     }
 
     override fun setCacheRefreshExecutorExponentialBackOffBound(value: Int) {
@@ -285,7 +333,10 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getCacheRefreshExecutorExponentialBackOffBound(): Int {
-        return super.getCacheRefreshExecutorExponentialBackOffBound()
+        return map.getOrDefault(
+            GET_CACHE_REFRESH_EXECUTOR_EXPONENTIAL_BACK_OFF_BOUND,
+            super.getCacheRefreshExecutorExponentialBackOffBound()
+        ) as Int
     }
 
     override fun setInstanceInfoReplicationIntervalSeconds(value: Int) {
@@ -293,7 +344,10 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getInstanceInfoReplicationIntervalSeconds(): Int {
-        return super.getInstanceInfoReplicationIntervalSeconds()
+        return map.getOrDefault(
+            GET_INSTANCE_INFO_REPLICATION_INTERVAL_SECONDS,
+            super.getInstanceInfoReplicationIntervalSeconds()
+        ) as Int
     }
 
     override fun setEurekaServerTotalConnections(value: Int) {
@@ -301,7 +355,7 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getEurekaServerTotalConnections(): Int {
-        return super.getEurekaServerTotalConnections()
+        return map.getOrDefault(GET_EUREKA_SERVER_TOTAL_CONNECTIONS, super.getEurekaServerTotalConnections()) as Int
     }
 
     override fun enableAllowRedirects(value: Boolean) {
@@ -309,7 +363,7 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun allowRedirects(): Boolean {
-        return super.allowRedirects()
+        return map.getOrDefault(ALLOW_REDIRECTS, super.allowRedirects()) as Boolean
     }
 
     override fun enableRegisterWithEureka(value: Boolean) {
@@ -317,7 +371,7 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun shouldRegisterWithEureka(): Boolean {
-        return super.shouldRegisterWithEureka()
+        return map.getOrDefault(SHOULD_REGISTER_WITH_EUREKA, super.shouldRegisterWithEureka()) as Boolean
     }
 
     override fun setEurekaServiceUrlPollIntervalSeconds(value: Int) {
@@ -325,7 +379,10 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getEurekaServiceUrlPollIntervalSeconds(): Int {
-        return super.getEurekaServiceUrlPollIntervalSeconds()
+        return map.getOrDefault(
+            GET_EUREKA_SERVICE_URL_POLL_INTERVAL_SECONDS,
+            super.getEurekaServiceUrlPollIntervalSeconds()
+        ) as Int
     }
 
     override fun setProxyPort(value: String) {
@@ -333,7 +390,7 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun getProxyPort(): String? {
-        return super.getProxyPort()
+        return map.getOrDefault(GET_PROXY_PORT, super.getProxyPort()) as String?
     }
 
     override fun enableLogDeltaDiff(value: Boolean) {
@@ -341,15 +398,15 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun shouldLogDeltaDiff(): Boolean {
-        return super.shouldLogDeltaDiff()
+        return map.getOrDefault(SHOULD_LOG_DELTA_DIFF, super.shouldLogDeltaDiff()) as Boolean
     }
 
     override fun setExperimental(name: String?, value: String) {
-        map[GET_EXPERIMENTAL] = value   // todo
+        map[GET_EXPERIMENTAL.withKey(name)] = value   // todo
     }
 
     override fun getExperimental(name: String?): String? {
-        return super.getExperimental(name)
+        return map.getOrDefault(GET_EXPERIMENTAL.withKey(name), super.getExperimental(name)) as String?
     }
 
     override fun enableDisableDelta(value: Boolean) {
@@ -357,13 +414,14 @@ class KtorClientConfig : DefaultEurekaClientConfig(), KtorEurekaClientConfig {
     }
 
     override fun shouldDisableDelta(): Boolean {
-        return super.shouldDisableDelta()
+        return map.getOrDefault(SHOULD_DISABLE_DELTA, super.shouldDisableDelta()) as Boolean
     }
 
     override fun setEurekaServerServiceUrls(value: List<String>, myZone: String) {
         map[GET_EUREKA_SERVER_SERVICE_URLS.withKey(myZone)] = value
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun getEurekaServerServiceUrls(myZone: String?): List<String> {
         return (map.getOrDefault(
             GET_EUREKA_SERVER_SERVICE_URLS.withKey(myZone),

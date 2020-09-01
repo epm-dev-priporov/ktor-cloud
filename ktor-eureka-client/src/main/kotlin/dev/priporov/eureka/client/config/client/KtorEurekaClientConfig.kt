@@ -4,18 +4,21 @@ import com.netflix.discovery.DefaultEurekaClientConfig.DEFAULT_ZONE
 import com.netflix.discovery.EurekaClientConfig
 import com.netflix.discovery.shared.transport.EurekaTransportConfig
 
+private const val DEFAULT_REGION = "us-east-1"
+
 interface KtorEurekaClientConfig: EurekaClientConfig {
     fun setEurekaServerTotalConnectionsPerHost(value: Int)
     fun enableUnregisterOnShutdown(value: Boolean)
     fun setHeartbeatExecutorThreadPoolSize(value: Int)
-    fun setGZipContent(value: Boolean)
+    fun enableGZipContent(value: Boolean)
     fun setRegistryForRemoteRegions(value: String?)
     fun setDollarReplacement(value: String)
     fun setRegistryFetchIntervalSeconds(value: Int)
     fun setEurekaServerReadTimeoutSeconds(value: Int)
     fun setClientDataAccept(value: String)
     fun setEscapeCharReplacement(value: String)
-    fun setAvailabilityZones(value: Array<String>, region: String?)
+    fun setAvailabilityZones(value: Array<String>, region: String? = DEFAULT_REGION)
+    fun setAvailabilityZones(value: Collection<String>, region: String? = DEFAULT_REGION)
     fun setHeartbeatExecutorExponentialBackOffBound(value: Int)
     fun setProxyHost(value: String)
     fun setOnDemandUpdateStatusChange(value: Boolean)
