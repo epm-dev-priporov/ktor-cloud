@@ -2,252 +2,116 @@ package dev.priporov.eureka.client.config.instance
 
 import com.netflix.appinfo.DataCenterInfo
 import com.netflix.appinfo.MyDataCenterInstanceConfig
-import dev.priporov.eureka.client.config.instance.EurekaPropertyKey.*
 
 class KtorInstanceConfig : MyDataCenterInstanceConfig(), KtorEurekaInstanceConfig {
-    private val map = HashMap<EurekaPropertyKey, Any?>()
 
-    override fun setNonSecurePortEnabled(value: Boolean) {
-        map[IS_NON_SECURE_PORT_ENABLED] = value
-    }
+    private var nonSecurePortEnabled = super.isNonSecurePortEnabled()
+    override fun setNonSecurePortEnabled(value: Boolean) { nonSecurePortEnabled = value }
+    override fun isNonSecurePortEnabled(): Boolean = nonSecurePortEnabled
 
-    override fun isNonSecurePortEnabled(): Boolean {
-        return map.getOrDefault(IS_NON_SECURE_PORT_ENABLED, super.isNonSecurePortEnabled()) as Boolean
-    }
+    private var statusPageUrl = super.getStatusPageUrl()
+    override fun setStatusPageUrl(value: String) { statusPageUrl = value }
+    override fun getStatusPageUrl(): String? = statusPageUrl
 
-    override fun setStatusPageUrl(value: String) {
-        map[STATUS_PAGE_URL] = value
-    }
+    private var secureHealthCheckUrl = super.getSecureHealthCheckUrl()
+    override fun setSecureHealthCheckUrl(value: String) { secureHealthCheckUrl = value }
+    override fun getSecureHealthCheckUrl(): String? = secureHealthCheckUrl
 
-    override fun getStatusPageUrl(): String? {
-        return map.getOrDefault(STATUS_PAGE_URL, super.getStatusPageUrl()) as String?
-    }
+    private var appname = super.getAppname()
+    override fun setAppname(value: String) { appname = value }
+    override fun getAppname(): String? = appname
 
-    override fun setSecureHealthCheckUrl(value: String) {
-        map[SECURE_HEALTH_CHECK_URL] = value
-    }
+    private var metadataMap = super.getMetadataMap()
+    override fun setMetadataMap(value: MutableMap<String, String>) { metadataMap = value }
+    override fun getMetadataMap(): MutableMap<String, String>? = metadataMap
 
-    override fun getSecureHealthCheckUrl(): String? {
-        return map.getOrDefault(SECURE_HEALTH_CHECK_URL, super.getSecureHealthCheckUrl()) as String?
-    }
+    private var ipAddress = super.getIpAddress()
+    override fun setIpAddress(value: String) { ipAddress = value }
+    override fun getIpAddress(): String? = ipAddress
 
-    override fun setAppname(value: String) {
-        map[APPNAME] = value
-    }
+    private var leaseRenewalIntervalInSeconds = super.getLeaseRenewalIntervalInSeconds()
+    override fun setLeaseRenewalIntervalInSeconds(value: Int) { leaseRenewalIntervalInSeconds = value }
+    override fun getLeaseRenewalIntervalInSeconds(): Int = leaseRenewalIntervalInSeconds
 
-    override fun getAppname(): String? {
-        return map.getOrDefault(APPNAME, super.getAppname()) as String?
-    }
+    private var dataCenterInfo = super.getDataCenterInfo()
+    override fun setDataCenterInfo(value: DataCenterInfo) { dataCenterInfo = value }
+    override fun getDataCenterInfo(): DataCenterInfo? = dataCenterInfo
 
-    override fun setMetadataMap(value: MutableMap<String, String>) {
-        map[METADATA_MAP] = value
-    }
+    private var nonSecurePort = super.getNonSecurePort()
+    override fun setNonSecurePort(value: Int) { nonSecurePort = value }
+    override fun getNonSecurePort(): Int = nonSecurePort
 
-    override fun getMetadataMap(): MutableMap<String, String>? {
-        return map.getOrDefault(METADATA_MAP, super.getMetadataMap()) as MutableMap<String, String>?
-    }
+    private var instanceEnabledOnit = super.isInstanceEnabledOnit()
 
-    override fun setIpAddress(value: String) {
-        map[IP_ADDRESS] = value
-    }
+    override fun setInstanceEnabledOnit(value: Boolean) { instanceEnabledOnit = value }
+    override fun isInstanceEnabledOnit(): Boolean = instanceEnabledOnit
 
-    override fun getIpAddress(): String? {
-        return map.getOrDefault(IP_ADDRESS, super.getIpAddress()) as String?
-    }
+    private var secureVirtualHostName = super.getSecureVirtualHostName()
+    override fun setSecureVirtualHostName(value: String?) { secureVirtualHostName = value }
+    override fun getSecureVirtualHostName(): String? = secureVirtualHostName
 
-    override fun setLeaseRenewalIntervalInSeconds(value: Int) {
-        map[LEASE_RENEWAL_INTERVAL_IN_SECONDS] = value
-    }
+    private var securePort = super.getSecurePort()
+    override fun setSecurePort(value: Int) { securePort = value }
+    override fun getSecurePort(): Int = securePort
 
-    override fun getLeaseRenewalIntervalInSeconds(): Int {
-        return map.getOrDefault(LEASE_RENEWAL_INTERVAL_IN_SECONDS, super.getLeaseRenewalIntervalInSeconds()) as Int
-    }
+    private var securePortEnabled = super.getSecurePortEnabled()
+    override fun setSecurePortEnabled(value: Boolean) { securePortEnabled = value }
+    override fun getSecurePortEnabled(): Boolean = securePortEnabled
 
-    override fun setDataCenterInfo(value: DataCenterInfo) {
-        map[DATA_CENTER_INFO] = value
-    }
+    private var asgname = super.getASGName()
+    override fun setASGName(value: String) { asgname = value }
+    override fun getASGName(): String? = asgname
 
-    override fun getDataCenterInfo(): DataCenterInfo? {
-        return map.getOrDefault(DATA_CENTER_INFO, super.getDataCenterInfo()) as DataCenterInfo?
-    }
+    private var statusPageUrlPath = super.getStatusPageUrlPath()
+    override fun setStatusPageUrlPath(value: String) { statusPageUrlPath = value }
+    override fun getStatusPageUrlPath(): String? = statusPageUrlPath
 
-    override fun setNonSecurePort(value: Int) {
-        map[NON_SECURE_PORT] = value
-    }
+    private var healthCheckUrl = super.getHealthCheckUrl()
+    override fun setHealthCheckUrl(value: String) { healthCheckUrl = value }
+    override fun getHealthCheckUrl(): String? = healthCheckUrl
 
-    override fun getNonSecurePort(): Int {
-        return map.getOrDefault(NON_SECURE_PORT, super.getNonSecurePort()) as Int
-    }
+    private var homePageUrlPath = super.getHomePageUrlPath()
+    override fun setHomePageUrlPath(value: String) { homePageUrlPath = value }
+    override fun getHomePageUrlPath(): String? = homePageUrlPath
 
+    private var _namespace = super.getNamespace()
+    override fun setNamespace(value: String) { _namespace = value }
+    override fun getNamespace(): String? = _namespace
 
-    override fun setInstanceEnabledOnit(value: Boolean) {
-        map[IS_INSTANCE_ENABLED_ONIT] = value
-    }
+    private var  homePageUrl = super.getHomePageUrl()
+    override fun setHomePageUrl(value: String) { homePageUrl = value }
+    override fun getHomePageUrl(): String? = homePageUrl
 
-    override fun isInstanceEnabledOnit(): Boolean {
-        return map.getOrDefault(IS_INSTANCE_ENABLED_ONIT, super.isInstanceEnabledOnit()) as Boolean
-    }
+    private var leaseExpirationDurationInSeconds = super.getLeaseExpirationDurationInSeconds()
+    override fun setLeaseExpirationDurationInSeconds(value: Int) { leaseExpirationDurationInSeconds = value }
+    override fun getLeaseExpirationDurationInSeconds(): Int = leaseExpirationDurationInSeconds
 
-    override fun setSecureVirtualHostName(value: String?) {
-        map[SECURE_VIRTUAL_HOST_NAME] = value
-    }
+    private var instanceId = super.getInstanceId()
+    override fun setInstanceId(value: String) { instanceId = value }
+    override fun getInstanceId(): String? = instanceId
 
-    override fun getSecureVirtualHostName(): String? {
-        return map.getOrDefault(SECURE_VIRTUAL_HOST_NAME, super.getSecureVirtualHostName()) as String?
-    }
+    private var defaultAddressResolutionOrder = super.getDefaultAddressResolutionOrder()
+    override fun setDefaultAddressResolutionOrder(value: Array<String>) { defaultAddressResolutionOrder = value }
+    override fun getDefaultAddressResolutionOrder(): Array<String>? = defaultAddressResolutionOrder
 
-    override fun setSecurePort(value: Int) {
-        map[SECURE_PORT] = value
-    }
+    private var appGroupName = super.getAppGroupName()
+    override fun setAppGroupName(value: String) { appGroupName = value }
+    override fun getAppGroupName(): String? = appGroupName
 
-    override fun getSecurePort(): Int {
-        return map.getOrDefault(SECURE_PORT, super.getSecurePort()) as Int
-    }
+    private var virtualHostName = super.getVirtualHostName()
+    override fun setVirtualHostName(value: String?) { virtualHostName = value }
+    override fun getVirtualHostName(): String? = virtualHostName
 
-    override fun setSecurePortEnabled(value: Boolean) {
-        map[SECURE_PORT_ENABLED] = value
-    }
+    private var healthCheckUrlPath = super.getHealthCheckUrlPath()
+    override fun setHealthCheckUrlPath(value: String) { healthCheckUrlPath = value }
+    override fun getHealthCheckUrlPath(): String? = healthCheckUrlPath
 
-    override fun getSecurePortEnabled(): Boolean {
-        return map.getOrDefault(SECURE_PORT_ENABLED, super.getSecurePortEnabled()) as Boolean
-    }
-
-    override fun setASGName(value: String) {
-        map[ASG_NAME] = value
-    }
-
-    override fun getASGName(): String? {
-        return map.getOrDefault(ASG_NAME, super.getASGName()) as String?
-    }
-
-    override fun setStatusPageUrlPath(value: String) {
-        map[STATUS_PAGE_URL_PATH] = value
-    }
-
-    override fun getStatusPageUrlPath(): String? {
-        return map.getOrDefault(STATUS_PAGE_URL_PATH, super.getStatusPageUrlPath()) as String?
-    }
-
-    override fun setHealthCheckUrl(value: String) {
-        map[HEALTH_CHECK_URL] = value
-    }
-
-    override fun getHealthCheckUrl(): String? {
-        return map.getOrDefault(HEALTH_CHECK_URL, super.getHealthCheckUrl()) as String?
-    }
-
-    override fun setHomePageUrlPath(value: String) {
-        map[HOME_PAGE_URL_PATH] = value
-    }
-
-    override fun getHomePageUrlPath(): String? {
-        return map.getOrDefault(HOME_PAGE_URL_PATH, super.getHomePageUrlPath()) as String?
-    }
-
-    override fun setNamespace(value: String) {
-        map[NAMESPACE] = value
-    }
-
-    override fun getNamespace(): String? {
-        return map.getOrDefault(NAMESPACE, super.getNamespace()) as String?
-    }
-
-    override fun setHomePageUrl(value: String) {
-        map[HOME_PAGE_URL] = value
-    }
-
-    override fun getHomePageUrl(): String? {
-        return map.getOrDefault(HOME_PAGE_URL, super.getHomePageUrl()) as String?
-    }
-
-    override fun setLeaseExpirationDurationInSeconds(value: Int) {
-        map[LEASE_EXPIRATION_DURATION_IN_SECONDS] = value
-    }
-
-    override fun getLeaseExpirationDurationInSeconds(): Int {
-        return map.getOrDefault(
-            LEASE_EXPIRATION_DURATION_IN_SECONDS,
-            super.getLeaseExpirationDurationInSeconds()
-        ) as Int
-    }
-
-    override fun setInstanceId(value: String) {
-        map[INSTANCE_ID] = value
-    }
-
-    override fun getInstanceId(): String? {
-        return map.getOrDefault(INSTANCE_ID, super.getInstanceId()) as String?
-    }
-
-    override fun setDefaultAddressResolutionOrder(value: Array<String>) {
-        map[DEFAULT_ADDRESS_RESOLUTION_ORDER] = value
-    }
-
-    override fun getDefaultAddressResolutionOrder(): Array<String>? {
-        return map.getOrDefault(
-            DEFAULT_ADDRESS_RESOLUTION_ORDER,
-            super.getDefaultAddressResolutionOrder()
-        ) as Array<String>?
-    }
-
-    override fun setAppGroupName(value: String) {
-        map[APP_GROUP_NAME] = value
-    }
-
-    override fun getAppGroupName(): String? {
-        return map.getOrDefault(APP_GROUP_NAME, super.getAppGroupName()) as String?
-    }
-
-    override fun setVirtualHostName(value: String?) {
-        map[VIRTUAL_HOST_NAME] = value
-    }
-
-    override fun getVirtualHostName(): String? {
-        return map.getOrDefault(VIRTUAL_HOST_NAME, null) as String?
-    }
-
-    override fun setHealthCheckUrlPath(value: String) {
-        map[HEALTH_CHECK_URL_PATH] = value
-    }
-
-    override fun getHealthCheckUrlPath(): String? {
-        return map.getOrDefault(HEALTH_CHECK_URL_PATH, super.getHealthCheckUrlPath()) as String?
-    }
-
+    private var hostName:String? = null
     override fun getHostName(refresh: Boolean): String? {
-        return map.getOrDefault(HOST_NAME, super.getHostName(refresh)) as String?
+        return hostName?: super.getHostName(refresh)
     }
 
     override fun setHostName(value: String?) {
-        map[HOST_NAME] = value
+        hostName = value
     }
-}
-
-private enum class EurekaPropertyKey {
-    IS_NON_SECURE_PORT_ENABLED,
-    STATUS_PAGE_URL,
-    SECURE_HEALTH_CHECK_URL,
-    APPNAME,
-    METADATA_MAP,
-    IP_ADDRESS,
-    LEASE_RENEWAL_INTERVAL_IN_SECONDS,
-    DATA_CENTER_INFO,
-    NON_SECURE_PORT,
-    IS_INSTANCE_ENABLED_ONIT,
-    SECURE_VIRTUAL_HOST_NAME,
-    SECURE_PORT,
-    SECURE_PORT_ENABLED,
-    ASG_NAME,
-    STATUS_PAGE_URL_PATH,
-    HEALTH_CHECK_URL,
-    HOME_PAGE_URL_PATH,
-    NAMESPACE,
-    HOME_PAGE_URL,
-    LEASE_EXPIRATION_DURATION_IN_SECONDS,
-    INSTANCE_ID,
-    DEFAULT_ADDRESS_RESOLUTION_ORDER,
-    APP_GROUP_NAME,
-    VIRTUAL_HOST_NAME,
-    HEALTH_CHECK_URL_PATH,
-    HOST_NAME
 }
