@@ -4,9 +4,9 @@ import com.netflix.discovery.DiscoveryClient
 import io.ktor.application.Application
 import io.ktor.util.AttributeKey
 
-private val discoveryClientKey = AttributeKey<DiscoveryClient>("EurekaDiscoveryClient")
+internal val eurekaDiscoveryClientKey = AttributeKey<DiscoveryClient>("EurekaDiscoveryClient")
 
 val Application.discoveryClient: DiscoveryClient
-    get() = checkNotNull(attributes.getOrNull(discoveryClientKey)) {
+    get() = checkNotNull(attributes.getOrNull(eurekaDiscoveryClientKey)) {
         "EurekaDiscoveryClient not configured or still not initialized"
     }

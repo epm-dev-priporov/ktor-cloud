@@ -16,7 +16,6 @@ class EurekaClientFeature private constructor(
     private var eurekaConfig: EurekaConfig,
     private val pipeline: Application
 ) {
-    private val eurekaDiscoveryClientKey = AttributeKey<DiscoveryClient>("EurekaDiscoveryClient")
 
     init {
         monitor.subscribe(ApplicationStarted) {
