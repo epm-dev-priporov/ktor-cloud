@@ -40,8 +40,8 @@ object EurekaInstanceConfigBuilder {
             }
 
             val securePortEnabled = ktorInstanceConfig.securePortEnabled
-            var port = if (securePortEnabled) ktorInstanceConfig.nonSecurePort else ktorInstanceConfig.securePort
-            var protocol = if (securePortEnabled) URLProtocol.HTTP else URLProtocol.HTTPS
+            var port = if (securePortEnabled) ktorInstanceConfig.securePort else ktorInstanceConfig.nonSecurePort
+            var protocol = if (securePortEnabled) URLProtocol.HTTPS else URLProtocol.HTTP
 
             if (securePortEnabled) {
                 protocol = URLProtocol.HTTPS
@@ -56,7 +56,7 @@ object EurekaInstanceConfigBuilder {
                 .path(healthCheck)
                 .buildString()
 
-            ktorInstanceConfig.setStatusPageUrl(statusPageUrl)
+            ktorInstanceConfig.statusPageUrl = statusPageUrl
         }
     }
 
@@ -102,9 +102,7 @@ object EurekaInstanceConfigBuilder {
 
     private fun initIpAddress(ktorInstanceConfig: EurekaConfig) {
         if (ktorInstanceConfig.ipAddress == InetAddress.getLocalHost().hostAddress) {
-            ktorInstanceConfig.setIpAddress(
-                findFirstNonLoopbackAddress().hostAddress
-            )
+            ktorInstanceConfig.ipAddress = findFirstNonLoopbackAddress().hostAddress
         }
     }
 
