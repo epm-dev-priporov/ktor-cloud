@@ -1,11 +1,9 @@
 package dev.priporov.eureka.client.config.instance
 
 import dev.priporov.eureka.client.config.EurekaConfig
-import io.ktor.application.Application
-import io.ktor.http.URLBuilder
-import io.ktor.http.URLProtocol
-import io.ktor.server.engine.ApplicationEngineEnvironment
-import io.ktor.server.engine.EngineConnectorConfig
+import io.ktor.application.*
+import io.ktor.http.*
+import io.ktor.server.engine.*
 import java.net.Inet4Address
 import java.net.InetAddress
 import java.net.NetworkInterface
@@ -39,19 +37,10 @@ object EurekaInstanceConfigBuilder {
                 healthCheckUrlPath
             }
 
-            val securePortEnabled = ktorInstanceConfig.securePortEnabled
-            var port = if (securePortEnabled) ktorInstanceConfig.securePort else ktorInstanceConfig.nonSecurePort
-            var protocol = if (securePortEnabled) URLProtocol.HTTPS else URLProtocol.HTTP
-
-            if (securePortEnabled) {
-                protocol = URLProtocol.HTTPS
-                port = ktorInstanceConfig.securePort
-            }
-
             val statusPageUrl = URLBuilder(
-                protocol = protocol,
+                protocol = URLProtocol.HTTP,
                 host = ipAddress,
-                port = port
+                port = ktorInstanceConfig.nonSecurePort
             )
                 .path(healthCheck)
                 .buildString()
