@@ -22,31 +22,68 @@ object EurekaInstanceConfigBuilder {
         initSecureVirtualHostName(ktorInstanceConfig);
         initInstanceId(ktorInstanceConfig, connector);
         initStatusPageUrl(ktorInstanceConfig)
+        initHealthCheckPageUrl(ktorInstanceConfig)
+        initHomePageUrl(ktorInstanceConfig)
 
         return ktorInstanceConfig
     }
 
+    // todo use /info path
     private fun initStatusPageUrl(ktorInstanceConfig: EurekaConfig) {
         if (ktorInstanceConfig.statusPageUrl == null) {
-            val ipAddress = ktorInstanceConfig.ipAddress ?: throw IllegalArgumentException("ipAddress can not be null")
 
-            val healthCheckUrlPath = ktorInstanceConfig.healthCheckUrlPath ?: ""
-            val healthCheck = if (healthCheckUrlPath.startsWith("/")) {
-                healthCheckUrlPath.removePrefix("/")
-            } else {
-                healthCheckUrlPath
-            }
+            val statusPageUrlPath = preparePath(ktorInstanceConfig.statusPageUrlPath)
 
-            val statusPageUrl = URLBuilder(
-                protocol = URLProtocol.HTTP,
-                host = ipAddress,
-                port = ktorInstanceConfig.nonSecurePort
-            )
-                .path(healthCheck)
+            ktorInstanceConfig.statusPageUrl = toUrlBuilder(ktorInstanceConfig)
+                .path(statusPageUrlPath)
                 .buildString()
-
-            ktorInstanceConfig.statusPageUrl = statusPageUrl
         }
+    }
+
+    private fun initHealthCheckPageUrl(ktorInstanceConfig: EurekaConfig) {
+        if (ktorInstanceConfig.healthCheckUrl == null) {
+            val healthCheckUrlPath = preparePath(ktorInstanceConfig.healthCheckUrlPath)
+
+            ktorInstanceConfig.healthCheckUrl = toUrlBuilder(ktorInstanceConfig)
+                .path(healthCheckUrlPath)
+                .buildString()
+        }
+    }
+
+    private fun initHomePageUrl(ktorInstanceConfig: EurekaConfig) {
+        if (ktorInstanceConfig.homePageUrl == null) {
+            val homePageUrlPath = preparePath(ktorInstanceConfig.homePageUrlPath)
+
+            ktorInstanceConfig.healthCheckUrl = toUrlBuilder(ktorInstanceConfig)
+                .path(homePageUrlPath)
+                .buildString()
+        }
+    }
+
+    private fun preparePath(path:String?):String  {
+        if(path == null){
+            return ""
+        }
+        if (path.startsWith("/")) {
+            return path.removePrefix("/")
+        }
+        return path
+    }
+
+    private fun toUrlBuilder(ktorInstanceConfig: EurekaConfig): URLBuilder {
+        var ipAddress = ktorInstanceConfig.ipAddress
+        var port = ktorInstanceConfig.nonSecurePort
+        var protocol = URLProtocol.HTTP
+        if(ktorInstanceConfig.secureOnly()){
+            port = ktorInstanceConfig.securePort
+            protocol = URLProtocol.HTTPS
+        }
+
+        return URLBuilder(
+            protocol = protocol,
+            host = ipAddress,
+            port = port
+        )
     }
 
     private fun initInstanceId(
@@ -114,5 +151,7 @@ object EurekaInstanceConfigBuilder {
         // todo implement the method
         return true
     }
+
+    private fun EurekaConfig.secureOnly() = securePortEnabled && !isNonSecurePortEnabled
 
 }
