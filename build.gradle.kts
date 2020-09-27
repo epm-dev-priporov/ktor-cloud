@@ -12,7 +12,7 @@ plugins {
 }
 
 val ktorVersion: String by project
-val _version = "0.1-SNAPSHOT"
+val _version = "1.0.0"
 val groupValue:String = "net.devpriporov"
 
 group = groupValue

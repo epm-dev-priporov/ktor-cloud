@@ -6,7 +6,7 @@ is compatible with spring-eureka-server and can be use together.
 
 ### gradle
     
-    implementation "net.devpriporov:ktor-eureka-client:0.1-SNAPSHOT"
+    implementation "net.devpriporov:ktor-eureka-client:1.0.0"
     
     
 ### maven
