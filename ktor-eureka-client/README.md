@@ -5,14 +5,13 @@ is compatible with spring-eureka-server and can be use together.
 # Install dependency
 
 ### gradle
+
+    repositories {
+        jcenter()
+    }
     
     implementation "net.devpriporov:ktor-eureka-client:1.0.0"
     
-    
-### maven
-
-     
-
 ## How to use
 to apply the feature:
 
@@ -22,7 +21,7 @@ to apply the feature:
 
 The instance of __com.netflix.discovery.DiscoveryClient__ discovery client will be added to __io.ktor.application.Application__ as an extension field.
 
-the xample:
+the example:
     
      embeddedServer(Netty, port = 8079) {
             val app: Application = this
@@ -34,3 +33,6 @@ the xample:
             
             app.discoveryClient
     }
+
+Project gradle example can be found
+[here](https://github.com/epm-dev-priporov/ktor-cloud/tree/master/samples/ktor-eureka-client-sample)
