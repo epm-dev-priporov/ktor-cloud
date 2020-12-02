@@ -7,10 +7,7 @@ repositories {
 project.tasks.publishToMavenLocal{
     enabled = false
 }
-project.tasks.publishToMavenLocal{
-    enabled = false
-}
-project.tasks.publishMavenPublicationToMavenLocal{
+project.tasks.bintrayUpload{
     enabled = false
 }
 

@@ -1,4 +1,4 @@
-# ktor-eureka-client
+# ktor eureka client
 Ktor-eureka-client supposed to be the same as spring-eureka-client so that this
 is compatible with spring-eureka-server and can be use together. 
 
